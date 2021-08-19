@@ -1,4 +1,4 @@
-import navbarComponent from './components/navbar/navbarcomponent';
+import navbarComponent from './components/navbar/navbar.component';
 
 window.onload = () => {
     console.log(navbarComponent);
