@@ -1,9 +1,4 @@
-const NAVBAR_ELEMENT = document.getElementById("navbar");
-
-function NavbarComponent() {
-
-    let template=`
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Fourth navbar example">
+<nav id = "navbar-component" class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Fourth navbar example">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Expand at md</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,28 +31,4 @@ function NavbarComponent() {
         </form>
       </div>
     </div>
-  </nav>`
-
-  function injectTemplate() {
-      NAVBAR_ELEMENT.innerHTML = template;
-  }
-
-  function navigateToView(e) {
-      console.log(`Navigating to ${e.target.dataset.route}`);
-  }
-
-  function logout() {
-      console.log("Logging you out!");
-  }
-
-  this.render = function() {
-    injectTemplate();
-    document.getElementById('logout').addEventListener('click', logout);
-    document.getElementById('nav-to-student-login').addEventListener('click', navigateToView);
-    document.getElementById('nav-to-faculty-login').addEventListener('click', navigateToView);
-    document.getElementById('nav-to-register').addEventListener('click', navigateToView);
-    document.getElementById('nav-to-dashboard').addEventListener('click', navigateToView);
-  }
-}
-
-export default new NavbarComponent();
+  </nav>
