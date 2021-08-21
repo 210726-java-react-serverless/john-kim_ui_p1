@@ -1,4 +1,5 @@
 const NAVBAR_ELEMENT = document.getElementById("navbar");
+import router from '../../app.js';
 
 function NavbarComponent() {
 
@@ -31,7 +32,7 @@ function NavbarComponent() {
   }
 
   function navigateToView(e) {
-      console.log(`Navigating to ${e.target.dataset.route}`);
+      router.navigate(`${e.target.dataset.route}`);
   }
 
   function logout() {

@@ -22,7 +22,7 @@ export function ViewComponent(viewName) {
             cb();
         } else {
             fetch(this.viewMetadata.templateUri)
-                .then(resp => resp.text)
+                .then(resp => resp.text())
                 .then(html => {
                     templateHolder = html;
                     env.rootDiv.innerHTML = templateHolder;
