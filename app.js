@@ -1,6 +1,7 @@
 import navbarComponent from './components/navbar/navbar.component.js';
 import loginComponent from './components/login/login.component.js';
 import facLoginComponent from './components/facLogin/facLogin.component.js';
+import facDashboardComponent from './components/facDashboard/facDashboard.component.js';
 
 import { Router } from './util/router.js';
 
@@ -14,6 +15,10 @@ let routes = [
     {
         path: '/facLogin',
         component: facLoginComponent
+    },
+    {
+        path: '/facDashboard',
+        component: facDashboardComponent
     }
 ]
 

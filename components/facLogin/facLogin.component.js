@@ -64,7 +64,7 @@ function FacLoginComponent() {
         state.authUser = data;
         console.log(data);
 
-        router.navigate('dashboard'); // TODO: Implement the dashboard!
+        router.navigate('/facDashboard'); // TODO: Implement the dashboard!
     }
 
     this.render = function() {
