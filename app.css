@@ -1,3 +1,14 @@
 body {
-    margin: 5rem;
+    background-image: url('./components/assets/Fantasy\ Fae\ Bridge.jpg');
+}
+#main-div {
+    background-color:rgba(176, 224, 230, 0.788);
+    background-size: 50%;
+    width: 80%;
+    margin: 0 auto;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-bottom: 1.5em;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
 }
