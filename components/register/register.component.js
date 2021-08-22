@@ -91,7 +91,7 @@ function RegisterComponent(){
         state.authRegister = data1;
         console.log(data1);
 
-        router.navigate('/studentDashboard');
+        router.navigate('/login');
 
     }    
 
