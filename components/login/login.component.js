@@ -50,7 +50,7 @@ function LoginComponent() {
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/auth`, {
+        let response = await fetch(`${env.apiUrl}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ function LoginComponent() {
         state.authUser = data;
         console.log(data);
 
-        router.navigate('studentDashboard'); // TODO: Implement the dashboard!
+        router.navigate('/studentDashboard'); // TODO: Implement the dashboard!
     }
 
     this.render = function() {

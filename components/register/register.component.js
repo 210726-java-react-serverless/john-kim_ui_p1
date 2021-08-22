@@ -76,7 +76,7 @@ function RegisterComponent(){
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/auth`,{
+        let response = await fetch(`${env.apiUrl}/register`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -91,7 +91,7 @@ function RegisterComponent(){
         state.authRegister = data1;
         console.log(data1);
 
-        router.navigate('studentDashboard');
+        router.navigate('/studentDashboard');
 
     }    
 
