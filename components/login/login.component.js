@@ -34,7 +34,7 @@ function LoginComponent() {
         }
     }
 
-    async function login() {
+    async function stuLogin() {
 
         if(!username || !password) {
             updateErrorMsg('You need to input both a username and a password!');
@@ -50,7 +50,7 @@ function LoginComponent() {
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/login`, {
+        let response = await fetch(`${env.apiUrl}/stuLogin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ function LoginComponent() {
 
             usernameFieldElement.addEventListener('keyup', logUsername);
             passwordFieldElement.addEventListener('keyup', logPassword);
-            loginButtonElement.addEventListener('click', login);
+            loginButtonElement.addEventListener('click', stuLogin);
         });
         LoginComponent.prototype.injectStyleSheet();
     }
