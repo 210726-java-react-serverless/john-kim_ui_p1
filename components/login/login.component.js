@@ -50,7 +50,7 @@ function LoginComponent() {
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/stuLogin`, {
+        let response = await fetch(`${env.apiUrl}/auth`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
