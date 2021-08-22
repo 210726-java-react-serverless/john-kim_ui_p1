@@ -64,7 +64,7 @@ function LoginComponent() {
         state.authUser = data;
         console.log(data);
 
-        router.navigate('dashboard'); // TODO: Implement the dashboard!
+        router.navigate('studentDashboard'); // TODO: Implement the dashboard!
     }
 
     this.render = function() {

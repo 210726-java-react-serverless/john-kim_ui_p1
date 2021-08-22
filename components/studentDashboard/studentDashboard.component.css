@@ -1,0 +1,15 @@
+h1{
+    text-align: center;
+}
+
+.form-signin {
+    text-align: center;
+}
+
+#dashboard-form-button{
+
+    font-size: .7em;
+    padding: .5em;
+    margin: .5em;
+}
+
