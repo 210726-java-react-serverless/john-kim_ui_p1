@@ -84,12 +84,12 @@ function RegisterComponent(){
             body: JSON.stringify(credentials)
         });
 
-        let data1 = await response.json();
+        let data = await response.json();
 
         status = response.status;
 
-        state.authRegister = data1;
-        console.log(data1);
+        state.authUser = data;
+        console.log(data);
 
         router.navigate('/login');
 
