@@ -76,7 +76,7 @@ function RegisterComponent(){
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/registration`,{
+        let response = await fetch(`${env.apiUrl}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
