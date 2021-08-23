@@ -34,6 +34,12 @@ function FacLoginComponent() {
         }
     }
 
+    function checkEnter(e) {
+        if(e.key === 'Enter') {
+            login();
+        }
+    }
+
     async function login() {
 
         if(!username || !password) {
@@ -53,8 +59,9 @@ function FacLoginComponent() {
         let response = await fetch(`${env.apiUrl}/facLogin`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
+            credentials: "include",
             body: JSON.stringify(credentials)
         });
         let data = await response.json();
@@ -77,6 +84,11 @@ function FacLoginComponent() {
             usernameFieldElement.addEventListener('keyup', logUsername);
             passwordFieldElement.addEventListener('keyup', logPassword);
             loginButtonElement.addEventListener('click', login);
+            passwordFieldElement.addEventListener('keydown', function(e) {
+                if(e.key === 'Enter') {
+                    login();
+                }
+            })
         });
         FacLoginComponent.prototype.injectStyleSheet();
     }
