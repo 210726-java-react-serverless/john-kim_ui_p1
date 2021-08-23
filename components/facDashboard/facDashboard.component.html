@@ -1,1 +1,40 @@
-<h1>facDashboard works!</h1>
+<div class="container">
+
+    <div id="course-info-form">
+        <h1>Fill out the below form to add a new course</h1>
+        <br/><br/>
+
+        <h4>Name:</h4>
+        <input type="text" class="form-control" id="course-name">
+
+        <h4>Course ID:</h4>
+        <input type="text" class="form-control" id="course-id">
+
+        <h4>Description:</h4>
+        <input type="text" class="form-control" id="course-desc">
+
+        <select class="form-select" aria-label="Default select example" id="open-selector">
+            <option selected>Open or Closed?</option>
+            <option value="1">Open</option>
+            <option value="2">Closed</option>
+        </select>
+
+        <br/>
+        <button class="btn btn-primary" id="add-course">Add Course</button>
+        <br/><hr/><br/>
+
+        <table class="table" id="course-table">
+            <thead>
+            <th>Course Name</th>
+            <th>Course ID</th>
+            <th>Description</th>
+            <th>Teacher</th>
+            <th>Open</th>
+            </thead>
+            <tbody id="course-table-body">
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
