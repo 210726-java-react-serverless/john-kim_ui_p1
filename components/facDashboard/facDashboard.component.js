@@ -13,9 +13,13 @@ function FacDashboardComponent() {
     let addCourseButtonElement;
     let courseTableBody;
 
+    let welcomeSpanElement;
+
     async function getCourses() {
     // Fetch all teacher courses from database
-    let response = await fetch(`${env.apiUrl}/course`);
+    let response = await fetch(`${env.apiUrl}/course`, {
+        credentials: "include"
+    });
     let courses = await response.json();
 
     console.log(courses);
@@ -41,8 +45,7 @@ function FacDashboardComponent() {
     // Add student info to the newly appended row
     // studentIdCell.innerText = idGen.next().value;
     // studentNameCell.innerText = studentName;
-    // studentMajorCell.innerText = studentMajor;
-    
+    // studentMajorCell.innerText = studentMajor;  
 }
 
     this.render = function() {
@@ -53,6 +56,10 @@ function FacDashboardComponent() {
             courseOpenSelectElement = document.getElementById('open-selector');
             addCourseButtonElement = document.getElementById('add-course');
             courseTableBody = document.getElementById('course-table-body');
+
+            let currentUserName = state.authUser.lastName;
+            welcomeSpanElement = document.getElementById('user-name');
+            welcomeSpanElement.innerText = currentUserName;
 
             addCourseButtonElement.addEventListener('click', getCourses);
         });
