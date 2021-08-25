@@ -18,7 +18,9 @@ function FacDashboardComponent() {
     async function getCourses() {
     // Fetch all teacher courses from database
     let response = await fetch(`${env.apiUrl}/course`, {
-        credentials: "include"
+        headers: {
+            'Authorization': state.jwt
+        }
     });
     let courses = await response.json();
 
