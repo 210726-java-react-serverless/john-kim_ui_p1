@@ -64,10 +64,12 @@ function FacLoginComponent() {
             credentials: "include",
             body: JSON.stringify(credentials)
         });
+        let jwt = response.headers.get('Authorization');
         let data = await response.json();
 
         status = response.status;
 
+        state.jwt = jwt;
         state.authUser = data;
         console.log(data);
 
