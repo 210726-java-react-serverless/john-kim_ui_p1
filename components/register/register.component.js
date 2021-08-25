@@ -66,7 +66,6 @@ function RegisterComponent(){
         }
 
         let credentials = {
-
             firstName: firstName,
             lastName: lastName,
             email: email,
