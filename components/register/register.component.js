@@ -90,7 +90,7 @@ function RegisterComponent(){
         state.authUser = data;
         console.log(data);
 
-        router.navigate('/login');
+        router.navigate('/studentDashboard');
 
     }    
 

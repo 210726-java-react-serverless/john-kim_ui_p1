@@ -58,7 +58,7 @@ function LoginComponent() {
             body: JSON.stringify(credentials)
         });
         // Take the header and log it
-        let jwt = response.headers.get(Authorization);
+        let jwt = response.headers.get('Authorization');
         
         if (jwt === null) {
             console.log('Sorry! Token not found!');
