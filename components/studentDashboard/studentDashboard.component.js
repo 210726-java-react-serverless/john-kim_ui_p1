@@ -29,7 +29,7 @@ function StudentDashboardComponent(){
         }
     }  
 
- /*   async function courseDashboard(){
+    async function courseDashboard(){
         if(!true){
             updateErrorMsg('Please enter your answer!');
             return;
@@ -67,31 +67,7 @@ function StudentDashboardComponent(){
 
         router.navigate('/enrolledCourse'); 
 
-    }     */
-
-    function courseDashboard() {
-        const [data, dataSet] = useState<any>(null)
-      
-        const fetchMyAPI = useCallback(async () => {
-          let response = await fetch(`${env.apiUrl}/enroll`)
-
-          response = await response.json()
-          dataSet(response)
-        }, [])
-      
-        useEffect(() => {
-          fetchMyAPI()
-        }, [fetchMyAPI])
-      
-        return (
-          <div>
-            <div>data: {JSON.stringify(data)}</div>
-            <div>
-              <button onClick={fetchMyAPI}>manual fetch</button>
-            </div>
-          </div>
-        )
-      }
+    }
 
         this.render = function(){
 
