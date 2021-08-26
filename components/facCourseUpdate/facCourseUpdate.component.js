@@ -11,40 +11,62 @@ function FacCourseUpdateComponent() {
     let updateCourseButtonElement;
     let displayTargetCourseSpan;
 
-    let courseID = state.targetCourse;
+    let courseID = '';
     let courseName = '';
     let desc = '';
-    let teacher = state.authUser.lastName;
-    let open = null;
+    let teacher = '';
+    let open = true;
 
     function updateName(e) {
+        courseName = e.target.value;
         console.log(e.target.value);
     }
 
     function updateDesc(e) {
+        desc = e.target.value;
         console.log(e.target.value);
     }
 
     function updateOpen(e) {
-        console.log(e.target.value);
+        if(e.target.value === 'Open') {
+            open = true;
+            console.log(open);
+        } else {
+            open = false;
+            console.log(open);
+        }
     }
 
     async function updateCourse() {
-        if(courseID && courseName && desc && teacher && open) {
+
+        courseID = state.targetCourse;
+        teacher = state.authUser.lastName;
+
+        console.log(courseID);
+        console.log(courseName);
+        console.log(desc);
+        console.log(teacher);
+        console.log(open);
+
+        let courseReplace = {
+            classID: courseID,
+            name: courseName,
+            desc: desc,
+            teacher: teacher,
+            open: open
+        }
+
+        if(courseID && courseName && desc && teacher) {
+
             let response = await fetch(`${env.apiUrl}/course?update=true`, {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': state.jwt
                 },
-                body: {
-                    classID: courseID,
-                    name: courseName,
-                    desc: desc,
-                    teacher: teacher,
-                    open: open
-                }
+                body: JSON.stringify(courseReplace)
             });
-            let data = await JSON.stringify(response);
+            let data = await response.json();
             console.log(data);
 
             router.navigate('/facDashboard');
