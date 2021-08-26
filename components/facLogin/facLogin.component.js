@@ -34,12 +34,6 @@ function FacLoginComponent() {
         }
     }
 
-    function checkEnter(e) {
-        if(e.key === 'Enter') {
-            login();
-        }
-    }
-
     async function login() {
 
         if(!username || !password) {
