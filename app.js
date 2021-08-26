@@ -5,6 +5,7 @@ import studentDashboardComponent from './components/studentDashboard/studentDash
 import facLoginComponent from './components/facLogin/facLogin.component.js';
 import facDashboardComponent from './components/facDashboard/facDashboard.component.js';
 import landingComponent from './components/landing/landing.component.js';
+import facCourseUpdateComponent from './components/facCourseUpdate/facCourseUpdate.component.js';
 
 import { Router } from './util/router.js';
 
@@ -39,6 +40,10 @@ let routes = [
     {
         path: '/landing',
         component: landingComponent
+    },
+    {
+        path: '/facCourseUpdate',
+        component: facCourseUpdateComponent
     }
 ]
 
