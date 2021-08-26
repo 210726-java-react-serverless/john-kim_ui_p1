@@ -3,9 +3,9 @@ import env from '../../util/env.js';
 import state from '../../util/state.js';
 import router from '../../app.js';
 
-StudentDashboardComponent.prototype = new ViewComponent('studentDashboard');
+EnrolledCourseComponent.prototype = new ViewComponent('enrolledCourse');
 
-function StudentDashboardComponent(){
+function EnrolledCourseComponent(){
 
     let courseFieldElement;
     let enrolledFieldElement;
@@ -17,10 +17,11 @@ function StudentDashboardComponent(){
     let course = '';
     let enrolled = '';
 
-    //checking the opening course
-    function updateCourse(e){
-        course = e.target.value;
-        console.log(course);
+
+    //viewing the registered course
+    function updateEnrolled(e){
+        enrolled = e.target.value;
+        console.log(enrolled);
     }
 
     function updateErrorMsg(){
@@ -31,18 +32,19 @@ function StudentDashboardComponent(){
             errorMessageElement.setAttribute('hidden', 'true');
             errorMessageElement.innerText = '';
         }
+    
     }
-
-    async function courseDashboard(){
-        if(!course){
+    
+    async function enrolledDashboard(){
+        if(!enrolled){
             updateErrorMsg('Please enter your answer!');
             return;
         }else{
             updateErrorMsg('');
         }
 
-        let  courseInfor = {
-            course: course,
+        let  enrolledInfor = {
+            enrolled: enrolled,
         }
 
         let status = 0;
@@ -53,7 +55,7 @@ function StudentDashboardComponent(){
                 'Content-Type': 'appplication/json'
             },
             
-            body: JSON.stringify(courseInfor)
+            body: JSON.stringify(enrolledInfor)
         });
 
         let data = await response.json();
@@ -63,7 +65,7 @@ function StudentDashboardComponent(){
         state.authUser = data;
         console.log(data);
 
-        router.navigate('/enrolledCourse'); 
+        router.navigate('/studentDashboard'); 
 
     }
 
