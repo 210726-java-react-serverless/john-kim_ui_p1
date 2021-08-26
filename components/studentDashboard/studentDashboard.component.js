@@ -8,14 +8,10 @@ StudentDashboardComponent.prototype = new ViewComponent('studentDashboard');
 function StudentDashboardComponent(){
 
     let courseFieldElement;
-    let enrolledFieldElement;
-
     let courseButtonElement;
-    let enrolledButtonElement;
     let errorMessageElement;
 
     let course = '';
-    let enrolled = '';
 
     //checking the opening course
     function updateCourse(e){
@@ -31,33 +27,39 @@ function StudentDashboardComponent(){
             errorMessageElement.setAttribute('hidden', 'true');
             errorMessageElement.innerText = '';
         }
-    }
+    }  
 
-    async function courseDashboard(){
-        if(!course){
+ /*   async function courseDashboard(){
+        if(!true){
             updateErrorMsg('Please enter your answer!');
             return;
         }else{
             updateErrorMsg('');
-        }
+        } 
 
         let  courseInfor = {
-            course: course,
+            course: true,
         }
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/auth`, {
-            method: 'POST',
+        let response = await fetch(`${env.apiUrl}/enroll`, {
+            method: 'GET',
             headers: {
-                'Content-Type': 'appplication/json'
+                'Content-Type': 'application/json'
             },
-            
             body: JSON.stringify(courseInfor)
         });
+        // Take the header and log it
+        let jwt = response.headers.get('Authorization');
+        
+        if (jwt === null) {
+            console.log('Sorry! Token not found!');
+        } else {
+            state.jwt = jwt;
+        }
 
         let data = await response.json();
-
         status = response.status;
 
         state.authUser = data;
@@ -65,24 +67,43 @@ function StudentDashboardComponent(){
 
         router.navigate('/enrolledCourse'); 
 
-    }
+    }     */
+
+    function courseDashboard() {
+        const [data, dataSet] = useState<any>(null)
+      
+        const fetchMyAPI = useCallback(async () => {
+          let response = await fetch(`${env.apiUrl}/enroll`)
+
+          response = await response.json()
+          dataSet(response)
+        }, [])
+      
+        useEffect(() => {
+          fetchMyAPI()
+        }, [fetchMyAPI])
+      
+        return (
+          <div>
+            <div>data: {JSON.stringify(data)}</div>
+            <div>
+              <button onClick={fetchMyAPI}>manual fetch</button>
+            </div>
+          </div>
+        )
+      }
 
         this.render = function(){
 
             StudentDashboardComponent.prototype.injectTemplate(() => {
 
                 courseButtonElement = document.getElementById('dashboard-form-button');
-                enrolledButtonElement = document.getElementById('dashboard-form-button');
                 errorMessageElement = document.getElementById('error-msg');
 
                 courseFieldElement = document.getElementById('login-form-course');
-                enrolledFieldElement = document.getElementById('login-form-enrolled');
-
                 courseFieldElement.addEventListener('keyup', updateCourse);
-                enrolledFieldElement.addEventListener('keyup', updateEnrolled);
 
                 courseButtonElement.addEventListener('click', courseDashboard);
-                enrolledButtonElement.addEventListener('click', enrolledDashboard);
                 
             });
             StudentDashboardComponent.prototype.injectStyleSheet();

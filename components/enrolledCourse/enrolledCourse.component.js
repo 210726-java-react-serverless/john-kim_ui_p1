@@ -7,14 +7,10 @@ EnrolledCourseComponent.prototype = new ViewComponent('enrolledCourse');
 
 function EnrolledCourseComponent(){
 
-    let courseFieldElement;
     let enrolledFieldElement;
-
-    let courseButtonElement;
     let enrolledButtonElement;
     let errorMessageElement;
 
-    let course = '';
     let enrolled = '';
 
 
@@ -49,17 +45,22 @@ function EnrolledCourseComponent(){
 
         let status = 0;
 
-        let response = await fetch(`${env.apiUrl}/auth`, {
-            method: 'POST',
+        let response = await fetch(`${env.apiUrl}/enroll`, {
             headers: {
-                'Content-Type': 'appplication/json'
+                'Content-Type': 'application/json'
             },
-            
             body: JSON.stringify(enrolledInfor)
         });
+        // Take the header and log it
+        let jwt = response.headers.get('Authorization');
+        
+        if (jwt === null) {
+            console.log('Sorry! Token not found!');
+        } else {
+            state.jwt = jwt;
+        }
 
         let data = await response.json();
-
         status = response.status;
 
         state.authUser = data;
@@ -71,25 +72,20 @@ function EnrolledCourseComponent(){
 
         this.render = function(){
 
-            StudentDashboardComponent.prototype.injectTemplate(() => {
+            EnrolledCourseComponent.prototype.injectTemplate(() => {
 
-                courseButtonElement = document.getElementById('dashboard-form-button');
                 enrolledButtonElement = document.getElementById('dashboard-form-button');
                 errorMessageElement = document.getElementById('error-msg');
 
-                courseFieldElement = document.getElementById('login-form-course');
                 enrolledFieldElement = document.getElementById('login-form-enrolled');
-
-                courseFieldElement.addEventListener('keyup', updateCourse);
                 enrolledFieldElement.addEventListener('keyup', updateEnrolled);
 
-                courseButtonElement.addEventListener('click', courseDashboard);
                 enrolledButtonElement.addEventListener('click', enrolledDashboard);
                 
             });
-            StudentDashboardComponent.prototype.injectStyleSheet();
+            EnrolledCourseComponent.prototype.injectStyleSheet();
         }
 
 }
 
-export default new StudentDashboardComponent();
+export default new EnrolledCourseComponent();
