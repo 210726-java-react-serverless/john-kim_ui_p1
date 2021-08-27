@@ -8,63 +8,53 @@ StudentDashboardComponent.prototype = new ViewComponent('studentDashboard');
 function StudentDashboardComponent(){
 
     let courseButtonElement;
-    let errorMessageElement;
-    let errorMessage;
+    let course;
 
-
-    //checking the opening course
-    function updateCourse(e){
-        course = e.target.value;
-        console.log(course);
-    }
-
-    function updateErrorMsg(){
-        if(errorMessage){
-            errorMessageElement.removeAttribute('hidden');
-            errorMessageElement.innerText = errorMessage;
-        }else {
-            errorMessageElement.setAttribute('hidden', 'true');
-            errorMessageElement.innerText = '';
-        }
-    }  
+    //checking the opening course 
 
     async function courseDashboard(){
-        if(!true){
-            updateErrorMsg('Please enter your answer!');
-            return;
-        }else{
-            updateErrorMsg('');
-        } 
-
-        let  courseInfor = {
-            course: true,
-        }
-
-        let status = 0;
+       
+        studentTableBody.innerHTML = '';
 
         let response = await fetch(`${env.apiUrl}/enroll`, {
-            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authenization': state.jwt
             },
-            body: JSON.stringify(courseInfor)
         });
-        // Take the header and log it
-        let jwt = response.headers.get('Authorization');
-        
-        if (jwt === null) {
-            console.log('Sorry! Token not found!');
-        } else {
-            state.jwt = jwt;
+
+        course = await response.json();
+
+        console.log(course);
+
+        if(course){
+            for(let i = 0; i < course.length; i++)
+
+            let rows = document.createElement('tr');
+            let courseIdRow = document.createElement('td');
+            let courseNameRow = document.createElement('td');
+            let courseDescRow = document.createElement('td');
+            let courseTeacherRow = document.createElement('td');
+            let courseOpenRow = document.createElement('td');
+
+         
+            rows.appendChild(courseIdRow);
+            rows.appendChild(courseNameRow);
+            rows.appendChild(courseDescRow);
+            rows.appendChild(courseTeacherRow);
+            rows.appendChild(courseOpenRow);
+
+
+            studentTableBody.appendChild(rows);
+
+            courseIdRow.innerText = course[i].classID;
+            courseNameRow.innerText = course[i].name;
+            courseDescRow.innerText = course[i].desc;
+            courseTeacherRow.innerText = course[i].teacher;
+            courseOpenRow.innerText = '' + course[i].open;
+
+
         }
-
-        let data = await response.json();
-        status = response.status;
-
-        state.authUser = data;
-        console.log(data);
-
-        router.navigate('/enrolledCourse'); 
 
     }
 
@@ -73,7 +63,8 @@ function StudentDashboardComponent(){
             StudentDashboardComponent.prototype.injectTemplate(() => {
 
                 courseButtonElement = document.getElementById('dashboard-form-button');
-                errorMessageElement = document.getElementById('error-msg');
+                studentTableBody = document.getElementById('student-table-body');
+
                 courseButtonElement.addEventListener('click', courseDashboard);
                 
             });
