@@ -54,7 +54,7 @@ function NavbarComponent() {
         router.navigate('/dashboard');
       } 
     } catch(TypeError) {
-      router.navigateToView('/landing');
+      router.navigate('/landing');
     }
   }
 
@@ -82,6 +82,7 @@ function NavbarComponent() {
       document.getElementById('nav-to-dashboard').addEventListener('click', navigateToView);
       document.getElementById('login').addEventListener('click', login);
       document.getElementById('home-link').addEventListener('click', goToHome);
+      document.getElementById('brand').addEventListener('click', goToHome);
     });
   }
 }

@@ -70,6 +70,12 @@ function LoginComponent() {
         router.navigate('dashboard'); // TODO: Implement the dashboard!
     }
 
+    function checkEnter(e) {
+        if(e.key === 'Enter') {
+            login();
+        }
+    }
+
     this.render = function() {
         LoginComponent.prototype.injectTemplate(() => {
             usernameFieldElement = document.getElementById('login-form-username');
@@ -80,6 +86,7 @@ function LoginComponent() {
             usernameFieldElement.addEventListener('keyup', logUsername);
             passwordFieldElement.addEventListener('keyup', logPassword);
             loginButtonElement.addEventListener('click', login);
+            passwordFieldElement.addEventListener('keydown', checkEnter);
         });
         LoginComponent.prototype.injectStyleSheet();
     }
