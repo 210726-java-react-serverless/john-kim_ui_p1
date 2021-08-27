@@ -5,14 +5,8 @@ import studentDashboardComponent from './components/studentDashboard/studentDash
 import facLoginComponent from './components/facLogin/facLogin.component.js';
 import facDashboardComponent from './components/facDashboard/facDashboard.component.js';
 import landingComponent from './components/landing/landing.component.js';
-<<<<<<< HEAD
-import enrolledCourseComponent from './components/enrolledCourse/enrolledCourse.component.js';
-=======
 import facCourseUpdateComponent from './components/facCourseUpdate/facCourseUpdate.component.js';
->>>>>>> 0b7429284e64aa576c00919815566e1054363dde
-
 import { Router } from './util/router.js';
-
 // ----------------------------------------------------------------------------
 
 let routes = [
@@ -45,16 +39,15 @@ let routes = [
         path: '/landing',
         component: landingComponent
     },
-<<<<<<< HEAD
 
     {
         path: '/enrolledCourse',
         component: enrolledCourseComponent
-=======
+    },
+    
     {
         path: '/facCourseUpdate',
         component: facCourseUpdateComponent
->>>>>>> 0b7429284e64aa576c00919815566e1054363dde
     }
 ]
 
