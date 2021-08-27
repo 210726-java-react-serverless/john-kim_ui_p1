@@ -7,11 +7,10 @@ StudentDashboardComponent.prototype = new ViewComponent('studentDashboard');
 
 function StudentDashboardComponent(){
 
-    let courseFieldElement;
     let courseButtonElement;
     let errorMessageElement;
+    let errorMessage;
 
-    let course = '';
 
     //checking the opening course
     function updateCourse(e){
@@ -44,7 +43,7 @@ function StudentDashboardComponent(){
         let status = 0;
 
         let response = await fetch(`${env.apiUrl}/enroll`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -75,10 +74,6 @@ function StudentDashboardComponent(){
 
                 courseButtonElement = document.getElementById('dashboard-form-button');
                 errorMessageElement = document.getElementById('error-msg');
-
-                courseFieldElement = document.getElementById('login-form-course');
-                courseFieldElement.addEventListener('keyup', updateCourse);
-
                 courseButtonElement.addEventListener('click', courseDashboard);
                 
             });

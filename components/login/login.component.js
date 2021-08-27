@@ -59,7 +59,6 @@ function LoginComponent() {
         });
         // Take the header and log it
         let jwt = response.headers.get('Authorization');
-        
         if (jwt === null) {
             console.log('Sorry! Token not found!');
         } else {
@@ -67,8 +66,8 @@ function LoginComponent() {
         }
 
         let data = await response.json();
-        status = response.status;
 
+        state.jwt = jwt;
         state.authUser = data;
         console.log(data);
 
