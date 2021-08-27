@@ -41,11 +41,6 @@ let routes = [
     },
 
     {
-        path: '/enrolledCourse',
-        component: enrolledCourseComponent
-    },
-    
-    {
         path: '/facCourseUpdate',
         component: facCourseUpdateComponent
     }
