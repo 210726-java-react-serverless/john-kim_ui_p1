@@ -10,6 +10,7 @@ function FacCourseUpdateComponent() {
     let courseOpenSelectElement;
     let updateCourseButtonElement;
     let displayTargetCourseSpan;
+    let errorMessageBox;
 
     let courseID = '';
     let courseName = '';
@@ -37,16 +38,31 @@ function FacCourseUpdateComponent() {
         }
     }
 
+    function rerouting() {
+        courseID = '';
+        courseName = '';
+        desc = '';
+    }
+
+    function updateErrorMsg(errorMessage) {
+        if(errorMessage) {
+            errorMessageBox.removeAttribute('hidden');
+            errorMessageBox.innerText = errorMessage;
+        } else {
+            errorMessageBox.setAttribute('hidden', 'true');
+            errorMessageBox.innerText = '';
+        }
+    }
+
     async function updateCourse() {
 
         courseID = state.targetCourse;
         teacher = state.authUser.lastName;
 
-        console.log(courseID);
-        console.log(courseName);
-        console.log(desc);
-        console.log(teacher);
-        console.log(open);
+        if(!courseID) { updateErrorMsg('You must give a valid course ID!'); return;
+        } else if(!courseName) { updateErrorMsg('You must give a valid course name!'); return;
+        } else if(!desc) { updateErrorMsg('You must give a valid description!'); return;
+        } else { updateErrorMsg(''); }
 
         let courseReplace = {
             classID: courseID,
@@ -69,19 +85,23 @@ function FacCourseUpdateComponent() {
             let data = await response.json();
             console.log(data);
 
+            rerouting();
             router.navigate('/facDashboard');
         } else {
-            console.log('That is a falsy user!');
+            updateErrorMsg('That is a falsy course!');
         }
     }
 
     this.render = function() {
         FacCourseUpdateComponent.prototype.injectTemplate(() => {
+            rerouting();
+            
             courseNameFieldElement = document.getElementById('course-name');
             courseDescFieldElement = document.getElementById('course-desc');
             courseOpenSelectElement = document.getElementById('open-selector');
             updateCourseButtonElement = document.getElementById('update-course');
             displayTargetCourseSpan = document.getElementById('target-course');
+            errorMessageBox = document.getElementById('error-msg');
 
             displayTargetCourseSpan.innerHTML = state.targetCourse;
 

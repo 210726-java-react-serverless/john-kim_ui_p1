@@ -16,6 +16,7 @@ function FacDashboardComponent() {
     let courses;
     let courseTableBody;
     let courseTableData;
+    let errorMessageElement;
 
     let courseID = '';
     let courseName = '';
@@ -48,15 +49,30 @@ function FacDashboardComponent() {
         }
     }
 
+    function rerouting() {
+        desc = '';
+        courseName = '';
+        courseID = '';
+    }
+
+    function updateErrorMsg(errorMessage) {
+        if(errorMessage) {
+            errorMessageElement.removeAttribute('hidden');
+            errorMessageElement.innerText = errorMessage;
+        } else {
+            errorMessageElement.setAttribute('hidden', 'true');
+            errorMessageElement.innerText = '';
+        }
+    }
+
     async function addNewCourse() {
 
         teacher = state.authUser.lastName;
 
-        console.log(courseID);
-        console.log(courseName);
-        console.log(desc);
-        console.log(teacher);
-        console.log(open);
+        if(!courseID) { updateErrorMsg('You must give a valid course ID!'); return;
+        } else if(!courseName) { updateErrorMsg('You must give a valid course name!'); return;
+        } else if(!desc) { updateErrorMsg('You must give a valid description!'); return;
+        } else { updateErrorMsg(''); }
 
         let course = {
             classID: courseID,
@@ -81,7 +97,7 @@ function FacDashboardComponent() {
 
             getCourses();
         } else {
-            console.log('That is a falsy course!');
+            updateErrorMsg('That is a falsy course!');
         }
     }
 
@@ -111,6 +127,7 @@ function FacDashboardComponent() {
 
     function updateCourse(e) {
         state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
+        rerouting();
         router.navigate('/facCourseUpdate');
     }
 
@@ -118,7 +135,7 @@ function FacDashboardComponent() {
         // Make courses null in order to avoid repeats.
         courseTableBody.innerHTML = '';
         
-        // Fetch all teacher courses from database
+        // Grab all teacher courses from database
         let response = await fetch(`${env.apiUrl}/course`, {
             headers: {
                 'Authorization': state.jwt
@@ -167,12 +184,14 @@ function FacDashboardComponent() {
             deleteCourseButton.innerText = 'Delete Course';
         }
         } else {
-            console.log('Sorry, but you do not have any courses!');
+            updateErrorMsg('Sorry, but you do not have any courses.');
         }
     }
 
     this.render = function() {
         FacDashboardComponent.prototype.injectTemplate(() => {
+            rerouting();
+
             courseNameFieldElement = document.getElementById('course-name');
             courseIDFieldElement = document.getElementById('course-id');
             courseDescFieldElement = document.getElementById('course-desc');
@@ -182,7 +201,7 @@ function FacDashboardComponent() {
             courseTableBody = document.getElementById('course-table-body');
             courseTableData = document.getElementsByTagName('tr');
             courseWelcomeSpan = document.getElementById('welcome-name');
-    
+            errorMessageElement = document.getElementById('error-msg');
 
             addCourseButtonElement.addEventListener('click', addNewCourse);
             loadCourseButtonElement.addEventListener('click', getCourses);

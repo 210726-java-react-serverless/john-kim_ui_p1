@@ -1,5 +1,6 @@
 const NAVBAR_ELEMENT = document.getElementById("navbar");
 import router from '../../app.js';
+import state from '../../util/state.js';
 
 function NavbarComponent() {
 
@@ -36,7 +37,39 @@ function NavbarComponent() {
   }
 
   function logout() {
-      console.log("Logging you out!");
+    if(state.authUser) {
+      console.log('Logging you out!');
+      state.authUser = null;
+      router.navigate('/landing');
+    } else {
+      console.log('You are not logged in!');
+    }
+  }
+
+  function goToHome() {
+    try {
+      if(state.authUser.lastName) {
+        router.navigate('/facDashboard');
+      } else if(state.authUser) {
+        router.navigate('/dashboard');
+      } 
+    } catch(TypeError) {
+      router.navigateToView('/landing');
+    }
+  }
+
+  function login(e) {
+    try {
+      if(state.authUser.lastName) {
+        console.log('You are already logged in as a Faculty member!');
+        router.navigate('/facDashboard');
+      } else if(state.authUser) {
+        console.log('You are already logged in as a Student!');
+        router.navigate('/dashboard');
+      } 
+    } catch(TypeError) {
+      navigateToView(e);
+    }
   }
 
   this.render = function() {
@@ -47,6 +80,8 @@ function NavbarComponent() {
       document.getElementById('nav-to-faculty-login').addEventListener('click', navigateToView);
       document.getElementById('nav-to-register').addEventListener('click', navigateToView);
       document.getElementById('nav-to-dashboard').addEventListener('click', navigateToView);
+      document.getElementById('login').addEventListener('click', login);
+      document.getElementById('home-link').addEventListener('click', goToHome);
     });
   }
 }
