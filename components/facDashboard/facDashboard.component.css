@@ -1,6 +1,12 @@
 #open-selector {
     margin-top: .5rem;
 }
+#toast {
+    position: fixed;
+    bottom: 0px;
+    right: 0px; 
+    z-index: 1000;
+}
 button {
     display: inline;
 }
