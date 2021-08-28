@@ -34,7 +34,7 @@ function LoginComponent() {
         }
     }
 
-    async function login() {
+    async function stuLogin() {
 
         if(!username || !password) {
             updateErrorMsg('You need to input both a username and a password!');
@@ -59,20 +59,24 @@ function LoginComponent() {
         });
         // Take the header and log it
         let jwt = response.headers.get('Authorization');
-        let data = await response.json();
+        if (jwt === null) {
+            console.log('Sorry! Token not found!');
+        } else {
+            state.jwt = jwt;
+        }
 
-        status = response.status;
+        let data = await response.json();
 
         state.jwt = jwt;
         state.authUser = data;
         console.log(data);
 
-        router.navigate('dashboard'); // TODO: Implement the dashboard!
+        router.navigate('/studentDashboard'); 
     }
 
     function checkEnter(e) {
         if(e.key === 'Enter') {
-            login();
+            stuLogin();
         }
     }
 
@@ -85,8 +89,8 @@ function LoginComponent() {
 
             usernameFieldElement.addEventListener('keyup', logUsername);
             passwordFieldElement.addEventListener('keyup', logPassword);
-            loginButtonElement.addEventListener('click', login);
             passwordFieldElement.addEventListener('keydown', checkEnter);
+            loginButtonElement.addEventListener('click', stuLogin);
         });
         LoginComponent.prototype.injectStyleSheet();
     }
