@@ -7,66 +7,90 @@ EnrolledCourseComponent.prototype = new ViewComponent('enrolledCourse');
 
 function EnrolledCourseComponent(){
 
-    let enrolledFieldElement;
-    let enrolledButtonElement;
-    let errorMessageElement;
-
-    let enrolled = '';
+    let courseButtonElement;
+    let course;
+    let courseTableBody;
 
 
-    //viewing the registered course
-    function updateEnrolled(e){
-        enrolled = e.target.value;
-        console.log(enrolled);
-    }
+    //canceling the course
+    async function cancelCourse(e){
+        let cancel = e.currentTarget.parentElement.children[1].innerText;
+        console.log(cancel);
 
-    function updateErrorMsg(){
-        if(errorMessage){
-            errorMessageElement.removeAttribute('hidden');
-            errorMessageElement.innerText = errorMessage;
-        }else {
-            errorMessageElement.setAttribute('hidden', 'true');
-            errorMessageElement.innerText = '';
-        }
-    
-    }
-    
-    async function enrolledDashboard(){
-        if(!enrolled){
-            updateErrorMsg('Please enter your answer!');
-            return;
-        }else{
-            updateErrorMsg('');
+        let canceling = {
+            classID: cancel
         }
 
-        let  enrolledInfor = {
-            enrolled: enrolled,
-        }
+        let response = await fetch(`${env.apiUrl}/enroll?cancel=true`, {
 
-        let status = 0;
-
-        let response = await fetch(`${env.apiUrl}/enroll`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': state.jwt
             },
-            body: JSON.stringify(enrolledInfor)
+
+            body: JSON.stringify(canceling)
         });
-        // Take the header and log it
-        let jwt = response.headers.get('Authorization');
-        
-        if (jwt === null) {
-            console.log('Sorry! Token not found!');
-        } else {
-            state.jwt = jwt;
-        }
 
         let data = await response.json();
-        status = response.status;
-
-        state.authUser = data;
         console.log(data);
+        courseDashboard();
+    }
 
-        router.navigate('/studentDashboard'); 
+
+    //checking the registered course 
+    async function registerCourse(){
+       
+        courseTableBody.innerHTML = '';
+
+        let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': state.jwt
+            },
+        });
+
+        course = await response.json();
+
+        console.log(course);
+
+        if(course){
+            for(let i = 0; i < course.length; i++){
+
+            ///showing all courses    
+            let row = document.createElement('tr');
+            let courseIdRows = document.createElement('td');
+            let courseNameRows = document.createElement('td');
+            let courseDescRows = document.createElement('td');
+            let courseTeacherRows = document.createElement('td');
+            let courseOpenRows = document.createElement('td');
+
+            //cancel button
+            let cancelCourseButton = document.createElement('button');
+            cancelCourseButton.setAttribute('class', 'btn btn-primary');
+            cancelCourseButton.addEventListener('click', cancelCourse);
+         
+            //appending rows
+            row.appendChild(courseIdRows);
+            row.appendChild(courseNameRows);
+            row.appendChild(courseDescRows);
+            row.appendChild(courseTeacherRows);
+            row.appendChild(courseOpenRows);
+            row.appendChild(cancelCourseButton);
+
+            courseTableBody.appendChild(row);
+
+            courseIdRows.innerText = course[i].classID;
+            courseNameRows.innerText = course[i].name;
+            courseDescRows.innerText = course[i].desc;
+            courseTeacherRows.innerText = course[i].teacher;
+            courseOpenRows.innerText = '' + course[i].open;
+
+            cancelCourseButton.innerText = 'Cancel Course';
+
+            }
+
+        }
 
     }
 
@@ -74,13 +98,10 @@ function EnrolledCourseComponent(){
 
             EnrolledCourseComponent.prototype.injectTemplate(() => {
 
-                enrolledButtonElement = document.getElementById('dashboard-form-button');
-                errorMessageElement = document.getElementById('error-msg');
+                courseButtonElement = document.getElementById('dashboard-form-button');
+                courseTableBody = document.getElementById('course-table-body');
 
-                enrolledFieldElement = document.getElementById('login-form-enrolled');
-                enrolledFieldElement.addEventListener('keyup', updateEnrolled);
-
-                enrolledButtonElement.addEventListener('click', enrolledDashboard);
+                courseButtonElement.addEventListener('click', registerCourse);
                 
             });
             EnrolledCourseComponent.prototype.injectStyleSheet();

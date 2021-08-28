@@ -9,17 +9,45 @@ function StudentDashboardComponent(){
 
     let courseButtonElement;
     let course;
+    let courseTableBody;
+
+
+    //registering a course
+    async function registerCourse(e){
+        state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
+        console.log(targetCourse);
+
+        let registering = {
+            classID: register
+        }
+
+        let response = await fetch(`${env.apiUrl}/enroll?register=true`, {
+
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': state.jwt
+            },
+
+            body: JSON.stringify(registering)
+        });
+
+        let data = await response.json();
+        console.log(data);
+        courseDashboard();
+        router.navigate('/enrolledCourse');
+    }
+
 
     //checking the opening course 
-
     async function courseDashboard(){
        
-        studentTableBody.innerHTML = '';
+        courseTableBody.innerHTML = '';
 
-        let response = await fetch(`${env.apiUrl}/enroll`, {
+        let response = await fetch(`${env.apiUrl}/course?open=true`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authenization': state.jwt
+                'Authorization': state.jwt
             },
         });
 
@@ -28,31 +56,40 @@ function StudentDashboardComponent(){
         console.log(course);
 
         if(course){
-            for(let i = 0; i < course.length; i++)
+            for(let i = 0; i < course.length; i++){
 
-            let rows = document.createElement('tr');
-            let courseIdRow = document.createElement('td');
-            let courseNameRow = document.createElement('td');
-            let courseDescRow = document.createElement('td');
-            let courseTeacherRow = document.createElement('td');
-            let courseOpenRow = document.createElement('td');
+            ///showing all courses    
+            let row = document.createElement('tr');
+            let courseIdRows = document.createElement('td');
+            let courseNameRows = document.createElement('td');
+            let courseDescRows = document.createElement('td');
+            let courseTeacherRows = document.createElement('td');
+            let courseOpenRows = document.createElement('td');
 
+            //enroll button
+            let enrollCourseButton = document.createElement('button');
+            enrollCourseButton.setAttribute('class', 'btn btn-primary');
+            enrollCourseButton.addEventListener('click', registerCourse);
          
-            rows.appendChild(courseIdRow);
-            rows.appendChild(courseNameRow);
-            rows.appendChild(courseDescRow);
-            rows.appendChild(courseTeacherRow);
-            rows.appendChild(courseOpenRow);
+            //appending rows
+            row.appendChild(courseIdRows);
+            row.appendChild(courseNameRows);
+            row.appendChild(courseDescRows);
+            row.appendChild(courseTeacherRows);
+            row.appendChild(courseOpenRows);
+            row.appendChild(enrollCourseButton);
 
+            courseTableBody.appendChild(row);
 
-            studentTableBody.appendChild(rows);
+            courseIdRows.innerText = course[i].classID;
+            courseNameRows.innerText = course[i].name;
+            courseDescRows.innerText = course[i].desc;
+            courseTeacherRows.innerText = course[i].teacher;
+            courseOpenRows.innerText = '' + course[i].open;
 
-            courseIdRow.innerText = course[i].classID;
-            courseNameRow.innerText = course[i].name;
-            courseDescRow.innerText = course[i].desc;
-            courseTeacherRow.innerText = course[i].teacher;
-            courseOpenRow.innerText = '' + course[i].open;
+            registerCourseButton.innerText = 'Register Course';
 
+            }
 
         }
 
@@ -63,7 +100,7 @@ function StudentDashboardComponent(){
             StudentDashboardComponent.prototype.injectTemplate(() => {
 
                 courseButtonElement = document.getElementById('dashboard-form-button');
-                studentTableBody = document.getElementById('student-table-body');
+                courseTableBody = document.getElementById('course-table-body');
 
                 courseButtonElement.addEventListener('click', courseDashboard);
                 
