@@ -11,7 +11,7 @@ function EnrolledCourseComponent() {
     let courseOpenElement;
     let courseTeacherElement;
     let courseUsernameElement;
-
+    let targetCourseDisplayElement;
     let courseButtonElement;
     let registerButtonElement;
     let viewButtonElement;
@@ -133,6 +133,15 @@ function EnrolledCourseComponent() {
 
     }
 
+    // Checks to see if there is a valid course; hides the course information if that is the case.
+    function hideFalseDisplay() {
+        if(!state.targetCourse.children[3].innerText) {
+            targetCourseDisplayElement.style.display = 'none';
+        } else {
+            targetCourseDisplayElement.style.display = 'block';
+        }
+    }
+
     
     this.render = function() {
         EnrolledCourseComponent.prototype.injectTemplate(() => {
@@ -142,7 +151,7 @@ function EnrolledCourseComponent() {
             courseTeacherElement = document.getElementById('target-teacher');
             courseUsernameElement = document.getElementById('target-username');
             courseOpenElement = document.getElementById('is-target-open');
-
+            targetCourseDisplayElement = document.getElementById('target-course-display');
             viewButtonElement = document.getElementById('view-form-button');
             courseButtonElement = document.getElementById('check-form-button');
             registerButtonElement = document.getElementById('register-form-button');
@@ -161,6 +170,7 @@ function EnrolledCourseComponent() {
             courseButtonElement.addEventListener('click', refreshCourses);
 
             refreshCourses();
+            hideFalseDisplay();
         });
         EnrolledCourseComponent.prototype.injectStyleSheet();
     }
