@@ -14,27 +14,8 @@ function StudentDashboardComponent(){
 
     //registering a course
     async function registerCourse(e){
+        
         state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
-        console.log(targetCourse);
-
-        let registering = {
-            classID: register
-        }
-
-        let response = await fetch(`${env.apiUrl}/enroll?register=true`, {
-
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': state.jwt
-            },
-
-            body: JSON.stringify(registering)
-        });
-
-        let data = await response.json();
-        console.log(data);
-        courseDashboard();
         router.navigate('/enrolledCourse');
     }
 
@@ -87,7 +68,7 @@ function StudentDashboardComponent(){
             courseTeacherRows.innerText = course[i].teacher;
             courseOpenRows.innerText = '' + course[i].open;
 
-            registerCourseButton.innerText = 'Register Course';
+            enrollCourseButton.innerText = 'Register Course';
 
             }
 

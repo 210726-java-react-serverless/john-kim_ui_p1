@@ -1,23 +1,44 @@
 <div id="studentDashboard-component">
 
-    <link rel="stylesheet" href="studentDashboard.component.css">
+    <link rel="stylesheet" href="enrolledCourse.component.css">
 
     <div class="form-signin">
 
             <div class="list" id="student-dashboard">
 
-                <h1 class="h3 mb-3 fw-normal">List of your registered courses!</h1>
-    
+                <h1 class="h3 mb-3 fw-normal" id="target-register">List of your registered courses!</h1>
                 <br/>
-                <button class="btn btn-primary" id="dashboard-form-button">Click to view</button>
+
+                <h4>CourseID:</h4>
+                <input type="text" class="form-control" id="course-id">
+
+                <h4>Course Name:</h4>
+                <input type="text" class="form-control" id="course-name">
+
+                <h4>Teacher:</h4>
+                <input type="text" class="form-control" id="course-teacher">
+
+                <h4>Username:</h4>
+                <input type="text" class="form-control" id="course-username">
+    
+                <h4>Open or Closed?</h4>
+                <select class="form-select" aria-label="Default select example" id="open-selector">
+                    <option selected>Open</option>
+                    <option value="1">Closed</option>
+                </select>
+
+                <br/>
+                <button class="btn btn-primary" id="register-form-button">Register</button>
+                <button class="btn btn-primary" id="check-form-button">Check registered courses</button>
+
                 <br/><hr/><br/>
     
                 <table class="table" id="student-table">
                     <thead>
                     <th>Course ID</th>
                     <th>Course Name</th>
-                    <th>Description</th>
                     <th>Teacher</th>
+                    <th>Username</th>
                     <th>Open</th>
                     <th>Cancel</th>
 
