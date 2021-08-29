@@ -70,6 +70,12 @@ function FacLoginComponent() {
         router.navigate('/facDashboard');
     }
 
+    function checkEnter(e) {
+        if(e.key === 'Enter') {
+            login();
+        }
+    }
+
     this.render = function() {
         FacLoginComponent.prototype.injectTemplate(() => {
             usernameFieldElement = document.getElementById('login-form-username');
@@ -80,11 +86,7 @@ function FacLoginComponent() {
             usernameFieldElement.addEventListener('keyup', logUsername);
             passwordFieldElement.addEventListener('keyup', logPassword);
             loginButtonElement.addEventListener('click', login);
-            passwordFieldElement.addEventListener('keydown', function(e) {
-                if(e.key === 'Enter') {
-                    login();
-                }
-            })
+            passwordFieldElement.addEventListener('keydown', checkEnter);
         });
         FacLoginComponent.prototype.injectStyleSheet();
     }

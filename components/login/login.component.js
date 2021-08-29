@@ -74,6 +74,12 @@ function LoginComponent() {
         router.navigate('/studentDashboard'); 
     }
 
+    function checkEnter(e) {
+        if(e.key === 'Enter') {
+            stuLogin();
+        }
+    }
+
     this.render = function() {
         LoginComponent.prototype.injectTemplate(() => {
             usernameFieldElement = document.getElementById('login-form-username');
@@ -83,6 +89,7 @@ function LoginComponent() {
 
             usernameFieldElement.addEventListener('keyup', logUsername);
             passwordFieldElement.addEventListener('keyup', logPassword);
+            passwordFieldElement.addEventListener('keydown', checkEnter);
             loginButtonElement.addEventListener('click', stuLogin);
         });
         LoginComponent.prototype.injectStyleSheet();

@@ -16,12 +16,18 @@ function FacDashboardComponent() {
     let courses;
     let courseTableBody;
     let courseTableData;
+    let errorMessageElement;
+    let confirmDeleteButtonElement;
+    let denyDeleteButtonElement;
+    let exitToastButtonElement;
 
     let courseID = '';
     let courseName = '';
     let desc = '';
     let teacher = '';
     let open = true;
+
+    let forDeletion;
 
     function updateCourseID(e) {
         courseID = e.target.value;
@@ -48,15 +54,30 @@ function FacDashboardComponent() {
         }
     }
 
+    function rerouting() {
+        desc = '';
+        courseName = '';
+        courseID = '';
+    }
+
+    function updateErrorMsg(errorMessage) {
+        if(errorMessage) {
+            errorMessageElement.removeAttribute('hidden');
+            errorMessageElement.innerText = errorMessage;
+        } else {
+            errorMessageElement.setAttribute('hidden', 'true');
+            errorMessageElement.innerText = '';
+        }
+    }
+
     async function addNewCourse() {
 
         teacher = state.authUser.lastName;
 
-        console.log(courseID);
-        console.log(courseName);
-        console.log(desc);
-        console.log(teacher);
-        console.log(open);
+        if(!courseID) { updateErrorMsg('You must give a valid course ID!'); return;
+        } else if(!courseName) { updateErrorMsg('You must give a valid course name!'); return;
+        } else if(!desc) { updateErrorMsg('You must give a valid description!'); return;
+        } else { updateErrorMsg(''); }
 
         let course = {
             classID: courseID,
@@ -81,15 +102,24 @@ function FacDashboardComponent() {
 
             getCourses();
         } else {
-            console.log('That is a falsy course!');
+            updateErrorMsg('That is a falsy course!');
         }
     }
 
-    // console.log(e.currentTarget.children[0].innerText);
-    async function deleteCourse(e) {
-        let forDeletion = e.currentTarget.parentElement.children[1].innerText;
+    function hideToast() {
+        forDeletion = '';
+        $('.toast').toast('dispose');
+    }
+
+    function setForDeletion(e) {
+        forDeletion = e.currentTarget.parentElement.children[1].innerText;
         console.log(forDeletion);
-        // $('.toast').toast(option); // TODO: Implement a toast!
+
+        $('.toast').toast('show');
+    }
+
+    // console.log(e.currentTarget.children[0].innerText);
+    async function deleteCourse() {
 
         let deletion = {
             classID: forDeletion
@@ -107,10 +137,12 @@ function FacDashboardComponent() {
         let data = await response.json();
         console.log(data);
         getCourses();
+        hideToast();
     }
 
     function updateCourse(e) {
         state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
+        rerouting();
         router.navigate('/facCourseUpdate');
     }
 
@@ -118,7 +150,7 @@ function FacDashboardComponent() {
         // Make courses null in order to avoid repeats.
         courseTableBody.innerHTML = '';
         
-        // Fetch all teacher courses from database
+        // Grab all teacher courses from database
         let response = await fetch(`${env.apiUrl}/course`, {
             headers: {
                 'Authorization': state.jwt
@@ -141,7 +173,7 @@ function FacDashboardComponent() {
             let updateCourseButton = document.createElement('button');
 
             deleteCourseButton.setAttribute('class', 'btn btn-primary');
-            deleteCourseButton.addEventListener('click', deleteCourse);
+            deleteCourseButton.addEventListener('click', setForDeletion);
             updateCourseButton.setAttribute('class', 'btn btn-primary');
             updateCourseButton.addEventListener('click', updateCourse);
 
@@ -167,12 +199,14 @@ function FacDashboardComponent() {
             deleteCourseButton.innerText = 'Delete Course';
         }
         } else {
-            console.log('Sorry, but you do not have any courses!');
+            updateErrorMsg('Sorry, but you do not have any courses.');
         }
     }
 
     this.render = function() {
         FacDashboardComponent.prototype.injectTemplate(() => {
+            rerouting();
+
             courseNameFieldElement = document.getElementById('course-name');
             courseIDFieldElement = document.getElementById('course-id');
             courseDescFieldElement = document.getElementById('course-desc');
@@ -182,7 +216,10 @@ function FacDashboardComponent() {
             courseTableBody = document.getElementById('course-table-body');
             courseTableData = document.getElementsByTagName('tr');
             courseWelcomeSpan = document.getElementById('welcome-name');
-    
+            errorMessageElement = document.getElementById('error-msg');
+            confirmDeleteButtonElement = document.getElementById('confirmation');
+            denyDeleteButtonElement = document.getElementById('denial');
+            exitToastButtonElement = document.getElementById('exit-toast');
 
             addCourseButtonElement.addEventListener('click', addNewCourse);
             loadCourseButtonElement.addEventListener('click', getCourses);
@@ -191,6 +228,9 @@ function FacDashboardComponent() {
             courseIDFieldElement.addEventListener('keyup', updateCourseID);
             courseDescFieldElement.addEventListener('keyup', updateDesc);
             courseOpenSelectElement.addEventListener('click', updateOpen);
+            denyDeleteButtonElement.addEventListener('click', hideToast);
+            exitToastButtonElement.addEventListener('click', hideToast);
+            confirmDeleteButtonElement.addEventListener('click', deleteCourse);
         });
         FacDashboardComponent.prototype.injectStyleSheet();
     }
