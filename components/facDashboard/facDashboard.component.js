@@ -205,7 +205,6 @@ function FacDashboardComponent() {
 
     this.render = function() {
         FacDashboardComponent.prototype.injectTemplate(() => {
-            rerouting();
 
             courseNameFieldElement = document.getElementById('course-name');
             courseIDFieldElement = document.getElementById('course-id');
@@ -231,6 +230,9 @@ function FacDashboardComponent() {
             denyDeleteButtonElement.addEventListener('click', hideToast);
             exitToastButtonElement.addEventListener('click', hideToast);
             confirmDeleteButtonElement.addEventListener('click', deleteCourse);
+
+            rerouting();
+            getCourses();
         });
         FacDashboardComponent.prototype.injectStyleSheet();
     }

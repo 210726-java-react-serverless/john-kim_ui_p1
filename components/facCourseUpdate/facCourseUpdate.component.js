@@ -94,7 +94,6 @@ function FacCourseUpdateComponent() {
 
     this.render = function() {
         FacCourseUpdateComponent.prototype.injectTemplate(() => {
-            rerouting();
             
             courseNameFieldElement = document.getElementById('course-name');
             courseDescFieldElement = document.getElementById('course-desc');
@@ -109,6 +108,8 @@ function FacCourseUpdateComponent() {
             courseNameFieldElement.addEventListener('keydown', updateName);
             courseDescFieldElement.addEventListener('keydown', updateDesc);
             courseOpenSelectElement.addEventListener('click', updateOpen);
+
+            rerouting();
         });
         FacCourseUpdateComponent.prototype.injectStyleSheet();
     }

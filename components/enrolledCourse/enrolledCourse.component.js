@@ -6,11 +6,11 @@ import router from '../../app.js';
 EnrolledCourseComponent.prototype = new ViewComponent('enrolledCourse');
 function EnrolledCourseComponent() {
 
-    let courseNameFieldElement;
-    let courseIDFieldElement;
-    let courseOpenSelectElement;
-    let courseTeacherFieldElement;
-    let courseUsernameFieldElement;
+    let courseNameElement;
+    let courseIDElement;
+    let courseOpenElement;
+    let courseTeacherElement;
+    let courseUsernameElement;
 
     let courseButtonElement;
     let registerButtonElement;
@@ -20,103 +20,66 @@ function EnrolledCourseComponent() {
     let courseTableBody;
     let courseTableData;
 
-    let courseID = '';
-    let courseName = '';
-    let open = true;
-    let teacher = '';
-    let username = '';
-
-    function updateCourseID(e) {
-        courseID = e.target.value;
-        console.log(e.target.value);
-    }
-
-    function updateName(e) {
-        courseName = e.target.value;
-        console.log(e.target.value);
-    }
-
-    function updateTeacher(e) {
-        teacher = e.target.value;
-        console.log(e.target.value);
-    }
-
-    function updateUsername(e) {
-        username = e.target.value;
-        console.log(e.target.value);
-    }
-
-    function updateOpen(e) {
-        if(e.target.value === 'Open') {
-            open = true;
-            console.log(open);
-        }
-    }
-
     //registring for a course
     async function registerCourse() {
 
-        //username = state.authUser.username;
-
         let registering = {
-            classID: courseID,
-            name: courseName,
-            teacher: teacher,
-            username: username,
-            open: open
-
+            classID: state.targetCourse.children[0].innerText,
+            name: state.targetCourse.children[1].innerText,
+            teacher: state.targetCourse.children[3].innerText,
+            username: state.authUser.username,
+            open: state.targetCourse.children[4].innerText
         }
 
-        if(courseID && courseName && teacher && username){
+        if(registering.classID && registering.name && registering.teacher && registering.username){
 
-        let response = await fetch(`${env.apiUrl}/enroll`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': state.jwt
-            },
-            body: JSON.stringify(registering)
-        });
-        let data = await response.json();
-        console.log(data);
+            let response = await fetch(`${env.apiUrl}/enroll`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': state.jwt
+                },
+                body: JSON.stringify(registering)
+            });
+            let data = await response.json();
+            console.log(data);
 
-        addCourse();
+            refreshCourses();
         }
     }
 
     //canceling the course
     async function cancelCourse(e){
-        let cancel = e.currentTarget.parentElement.children[1].innerText;
+        let cancel = e.currentTarget.parentElement.children[0].innerText;
         console.log(cancel);
 
         let canceling = {
-            classID: cancel
+            classID: cancel,
+            username: state.authUser.username
         }
 
         let response = await fetch(`${env.apiUrl}/enroll?cancel=true`, {
-
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': state.jwt
             },
-
             body: JSON.stringify(canceling)
         });
 
         let data = await response.json();
         console.log(data);
+        refreshCourses();
     }
 
      //sending back to studashboard
-     async function backToDash(e){
-        
-        state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
+     async function backToDash() {
+        state.targetCourse = '';
         router.navigate('/studentDashboard');
     }
 
     //viewing all registered
-    async function addCourse() {
+    async function refreshCourses() {
 
         courseTableBody.innerHTML = '';
                 
@@ -150,9 +113,9 @@ function EnrolledCourseComponent() {
                 //appending rows
                 row.appendChild(courseIdRows);
                 row.appendChild(courseNameRows);
-                row.appendChild(courseOpenRows);
                 row.appendChild(courseTeacherRows);
                 row.appendChild(courseUsernameRows);
+                row.appendChild(courseOpenRows);
                 row.appendChild(cancelCourseButton);
         
                 courseTableBody.appendChild(row);
@@ -169,33 +132,35 @@ function EnrolledCourseComponent() {
         }
 
     }
+
     
     this.render = function() {
         EnrolledCourseComponent.prototype.injectTemplate(() => {
 
-            courseNameFieldElement = document.getElementById('course-name');
-            courseIDFieldElement = document.getElementById('course-id');
-            courseTeacherFieldElement = document.getElementById('course-teacher');
-            courseUsernameFieldElement = document.getElementById('course-username');
-            courseOpenSelectElement = document.getElementById('open-selector');
+            courseNameElement = document.getElementById('target-coursename');
+            courseIDElement = document.getElementById('target-classID');
+            courseTeacherElement = document.getElementById('target-teacher');
+            courseUsernameElement = document.getElementById('target-username');
+            courseOpenElement = document.getElementById('is-target-open');
 
             viewButtonElement = document.getElementById('view-form-button');
             courseButtonElement = document.getElementById('check-form-button');
             registerButtonElement = document.getElementById('register-form-button');
             courseTableData = document.getElementsByTagName('tr');
 
+            courseNameElement.innerText = state.targetCourse.children[1].innerText;
+            courseIDElement.innerText = state.targetCourse.children[0].innerText;
+            courseTeacherElement.innerText = state.targetCourse.children[3].innerText;
+            courseUsernameElement.innerText = state.authUser.username;
+            courseOpenElement.innerText = state.targetCourse.children[4].innerText;
+
             courseTableBody = document.getElementById('course-table-body');
 
             viewButtonElement.addEventListener('click', backToDash);
             registerButtonElement.addEventListener('click', registerCourse);
-            courseButtonElement.addEventListener('click', addCourse);
-            courseNameFieldElement.addEventListener('keydown', updateName);
-            courseIDFieldElement.addEventListener('keydown', updateCourseID);
-            courseOpenSelectElement.addEventListener('click', updateOpen);
-            courseUsernameFieldElement.addEventListener('keydown', updateUsername);
-            courseTeacherFieldElement.addEventListener('keydown', updateTeacher);
+            courseButtonElement.addEventListener('click', refreshCourses);
 
-
+            refreshCourses();
         });
         EnrolledCourseComponent.prototype.injectStyleSheet();
     }

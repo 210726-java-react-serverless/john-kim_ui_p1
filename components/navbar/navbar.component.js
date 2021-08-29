@@ -51,7 +51,7 @@ function NavbarComponent() {
       if(state.authUser.lastName) {
         router.navigate('/facDashboard');
       } else if(state.authUser) {
-        router.navigate('/dashboard');
+        router.navigate('/studentDashboard');
       } 
     } catch(TypeError) {
       router.navigate('/landing');
@@ -65,7 +65,7 @@ function NavbarComponent() {
         router.navigate('/facDashboard');
       } else if(state.authUser) {
         console.log('You are already logged in as a Student!');
-        router.navigate('/dashboard');
+        router.navigate('/studentDashboard');
       } 
     } catch(TypeError) {
       navigateToView(e);

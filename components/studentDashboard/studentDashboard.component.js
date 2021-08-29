@@ -5,6 +5,7 @@ import router from '../../app.js';
 
 StudentDashboardComponent.prototype = new ViewComponent('studentDashboard');
 
+
 function StudentDashboardComponent(){
 
     let courseButtonElement;
@@ -13,11 +14,10 @@ function StudentDashboardComponent(){
     let course;
     let courseTableBody;
 
-
     //registering a course
     async function registerCourse(e){
         
-        state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
+        state.targetCourse = e.currentTarget.parentElement;
         router.navigate('/enrolledCourse');
     }
 
@@ -78,21 +78,26 @@ function StudentDashboardComponent(){
 
     }
 
-        this.render = function(){
+    function nullifyTargetCourse() {
+        state.targetCourse = '';
+    }
 
-            StudentDashboardComponent.prototype.injectTemplate(() => {
+    this.render = function(){
+        
+        StudentDashboardComponent.prototype.injectTemplate(() => {    
 
-                courseButtonElement = document.getElementById('view-form-button');
-                courseTableBody = document.getElementById('course-table-body');
-                registerButtonElement = document.getElementById('register-form-button');
+            courseButtonElement = document.getElementById('view-form-button');
+            courseTableBody = document.getElementById('course-table-body');
+            registerButtonElement = document.getElementById('register-form-button');
 
-                courseButtonElement.addEventListener('click', courseDashboard);
-                registerButtonElement.addEventListener('click', registerCourse);
+            courseButtonElement.addEventListener('click', courseDashboard);
+            registerButtonElement.addEventListener('click', registerCourse);
 
-            });
-            StudentDashboardComponent.prototype.injectStyleSheet();
-        }
-
+            nullifyTargetCourse();
+            courseDashboard();
+        });
+        StudentDashboardComponent.prototype.injectStyleSheet();
+    }
 }
 
 export default new StudentDashboardComponent();
