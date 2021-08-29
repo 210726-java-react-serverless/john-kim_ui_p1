@@ -108,13 +108,14 @@ function FacDashboardComponent() {
 
     function hideToast() {
         forDeletion = '';
-        $('.toast').toast('dispose');
+        $('.toast').toast('hide');
     }
 
     function setForDeletion(e) {
         forDeletion = e.currentTarget.parentElement.children[1].innerText;
         console.log(forDeletion);
 
+        $('.toast').toast({'autohide': false});
         $('.toast').toast('show');
     }
 
