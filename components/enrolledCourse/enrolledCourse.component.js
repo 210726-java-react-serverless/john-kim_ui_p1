@@ -14,8 +14,9 @@ function EnrolledCourseComponent() {
 
     let courseButtonElement;
     let registerButtonElement;
+    let viewButtonElement;
 
-    let course;
+    //let course;
     let courseTableBody;
     let courseTableData;
 
@@ -52,9 +53,10 @@ function EnrolledCourseComponent() {
         }
     }
 
+    //registring for a course
     async function registerCourse() {
 
-        username = state.authUser.username;
+        //username = state.authUser.username;
 
         let registering = {
             classID: courseID,
@@ -78,21 +80,54 @@ function EnrolledCourseComponent() {
         let data = await response.json();
         console.log(data);
 
-       // addCourse();
+        addCourse();
         }
     }
 
+    //canceling the course
+    async function cancelCourse(e){
+        let cancel = e.currentTarget.parentElement.children[1].innerText;
+        console.log(cancel);
+
+        let canceling = {
+            classID: cancel
+        }
+
+        let response = await fetch(`${env.apiUrl}/enroll?cancel=true`, {
+
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': state.jwt
+            },
+
+            body: JSON.stringify(canceling)
+        });
+
+        let data = await response.json();
+        console.log(data);
+    }
+
+     //sending back to studashboard
+     async function backToDash(e){
+        
+        state.targetCourse = e.currentTarget.parentElement.children[1].innerText;
+        router.navigate('/studentDashboard');
+    }
+
+    //viewing all registered
     async function addCourse() {
 
         courseTableBody.innerHTML = '';
                 
         let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': state.jwt
             }
         });
 
-            course = await response.json();
+            let course = await response.json();
             console.log(course)
 
         if(course){
@@ -144,12 +179,14 @@ function EnrolledCourseComponent() {
             courseUsernameFieldElement = document.getElementById('course-username');
             courseOpenSelectElement = document.getElementById('open-selector');
 
+            viewButtonElement = document.getElementById('view-form-button');
             courseButtonElement = document.getElementById('check-form-button');
             registerButtonElement = document.getElementById('register-form-button');
             courseTableData = document.getElementsByTagName('tr');
 
             courseTableBody = document.getElementById('course-table-body');
 
+            viewButtonElement.addEventListener('click', backToDash);
             registerButtonElement.addEventListener('click', registerCourse);
             courseButtonElement.addEventListener('click', addCourse);
             courseNameFieldElement.addEventListener('keydown', updateName);

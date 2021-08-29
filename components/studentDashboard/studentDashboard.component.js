@@ -8,6 +8,8 @@ StudentDashboardComponent.prototype = new ViewComponent('studentDashboard');
 function StudentDashboardComponent(){
 
     let courseButtonElement;
+    let registerButtonElement;
+
     let course;
     let courseTableBody;
 
@@ -80,11 +82,13 @@ function StudentDashboardComponent(){
 
             StudentDashboardComponent.prototype.injectTemplate(() => {
 
-                courseButtonElement = document.getElementById('dashboard-form-button');
+                courseButtonElement = document.getElementById('view-form-button');
                 courseTableBody = document.getElementById('course-table-body');
+                registerButtonElement = document.getElementById('register-form-button');
 
                 courseButtonElement.addEventListener('click', courseDashboard);
-                
+                registerButtonElement.addEventListener('click', registerCourse);
+
             });
             StudentDashboardComponent.prototype.injectStyleSheet();
         }
