@@ -11,7 +11,8 @@ function EnrolledCourseComponent() {
     let courseOpenSelectElement;
     let courseTeacherFieldElement;
     let courseUsernameFieldElement;
-
+    let displayTargetCourseSpan;
+    
     let courseButtonElement;
     let registerButtonElement;
 
@@ -54,6 +55,8 @@ function EnrolledCourseComponent() {
 
     async function registerCourse() {
 
+        username = state.authUser.username;
+
         let registering = {
             classID: courseID,
             name: courseName,
@@ -65,7 +68,7 @@ function EnrolledCourseComponent() {
 
         if(courseID && courseName && teacher && username){
 
-        let response = await fetch(`${env.apiUrl}/enroll`, {
+        let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,20 +79,19 @@ function EnrolledCourseComponent() {
         let data = await response.json();
         console.log(data);
 
-        addCourse();
+       // addCourse();
         }
     }
 
-    async function addCourse() {
-                // Make courses null in order to avoid repeats.
-            courseTableBody.innerHTML = '';
+   /* async function addCourse() {
+
+        courseTableBody.innerHTML = '';
                 
-                // Fetch all teacher courses from database
-            let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
-                headers: {
-                    'Authorization': state.jwt
-                    }
-            });
+        let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
+            headers: {
+                'Authorization': state.jwt
+            }
+        });
 
             course = await response.json();
             console.log(course)
@@ -134,7 +136,7 @@ function EnrolledCourseComponent() {
 
     }
     
-
+*/
     this.render = function() {
         EnrolledCourseComponent.prototype.injectTemplate(() => {
 
@@ -150,8 +152,11 @@ function EnrolledCourseComponent() {
 
             courseTableBody = document.getElementById('course-table-body');
 
+            displayTargetCourseSpan = document.getElementById('target-course');    
+            displayTargetCourseSpan.innerHTML = state.targetCourse;
+
             registerButtonElement.addEventListener('click', registerCourse);
-            courseButtonElement.addEventListener('click', addCourse);
+           // courseButtonElement.addEventListener('click', addCourse);
             courseNameFieldElement.addEventListener('keydown', updateName);
             courseIDFieldElement.addEventListener('keydown', updateCourseID);
             courseOpenSelectElement.addEventListener('click', updateOpen);
