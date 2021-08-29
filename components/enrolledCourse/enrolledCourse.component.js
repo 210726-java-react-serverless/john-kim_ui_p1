@@ -11,8 +11,7 @@ function EnrolledCourseComponent() {
     let courseOpenSelectElement;
     let courseTeacherFieldElement;
     let courseUsernameFieldElement;
-    let displayTargetCourseSpan;
-    
+
     let courseButtonElement;
     let registerButtonElement;
 
@@ -68,7 +67,7 @@ function EnrolledCourseComponent() {
 
         if(courseID && courseName && teacher && username){
 
-        let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
+        let response = await fetch(`${env.apiUrl}/enroll`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +82,7 @@ function EnrolledCourseComponent() {
         }
     }
 
-   /* async function addCourse() {
+    async function addCourse() {
 
         courseTableBody.innerHTML = '';
                 
@@ -136,7 +135,6 @@ function EnrolledCourseComponent() {
 
     }
     
-*/
     this.render = function() {
         EnrolledCourseComponent.prototype.injectTemplate(() => {
 
@@ -152,11 +150,8 @@ function EnrolledCourseComponent() {
 
             courseTableBody = document.getElementById('course-table-body');
 
-            displayTargetCourseSpan = document.getElementById('target-course');    
-            displayTargetCourseSpan.innerHTML = state.targetCourse;
-
             registerButtonElement.addEventListener('click', registerCourse);
-           // courseButtonElement.addEventListener('click', addCourse);
+            courseButtonElement.addEventListener('click', addCourse);
             courseNameFieldElement.addEventListener('keydown', updateName);
             courseIDFieldElement.addEventListener('keydown', updateCourseID);
             courseOpenSelectElement.addEventListener('click', updateOpen);
