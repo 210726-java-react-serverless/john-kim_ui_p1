@@ -120,7 +120,7 @@ function EnrolledCourseComponent() {
 
         courseTableBody.innerHTML = '';
                 
-        let response = await fetch(`${env.apiUrl}/enroll?enrolled=true`, {
+        let response = await fetch(`${env.apiUrl}/enroll`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': state.jwt
