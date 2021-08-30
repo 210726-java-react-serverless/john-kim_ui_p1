@@ -1,0 +1,57 @@
+<div class="container">
+    <h1>Welcome to your dashboard, <span id="welcome-name"></span></h1>
+    <div id="course-info-form">
+        <h2>Fill out the below form to add a new course</h2>
+        <br/>
+
+        <h4>Name:</h4>
+        <input type="text" class="form-control" id="course-name">
+
+        <h4>Course ID:</h4>
+        <input type="text" class="form-control" id="course-id">
+
+        <h4>Description:</h4>
+        <input type="text" class="form-control" id="course-desc">
+        
+        <h4>Open or Closed?</h4>
+        <select class="form-select" aria-label="Default select example" id="open-selector">
+            <option selected>Open</option>
+            <option value="1">Closed</option>
+        </select>
+        
+        <div id="error-msg-container">
+          <p hidden id="error-msg" class="alert alert-danger"></p>
+        </div>
+
+        <br/>
+        <button class="btn btn-primary" id="add-course">Add Course</button>
+        <button class="btn btn-primary" id="get-courses">Load Courses</button>
+        <br/><hr/><br/>
+        <div class="toast" role="alert" aria-live="assertive" data-autohide="false" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">Delete Course</strong>
+            <small>A second ago</small>
+            <button type="button" id="exit-toast" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">
+            Are you sure you would like to delete that course?
+            <button class="btn btn-primary" id="confirmation">Yes</button>
+            <button class="btn btn-primary" id="denial">No</button>
+          </div>
+      </div>
+        <table class="table" id="course-table">
+            <thead>
+            <th>Course Name</th>
+            <th>Course ID</th>
+            <th>Description</th>
+            <th>Teacher</th>
+            <th>Open</th>
+            </thead>
+            <tbody id="course-table-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
